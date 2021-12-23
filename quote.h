@@ -84,8 +84,27 @@ int unquote_c_style(struct strbuf *, const char *quoted, const char **endp);
 #define CQUOTE_NODQ 01
 size_t quote_c_style(const char *name, struct strbuf *, FILE *, unsigned);
 void quote_two_c_style(struct strbuf *, const char *, const char *, unsigned);
+/*
+ * Write a name, typically a filename, followed by a terminator that
+ * separates it from what comes next.
+ * When terminator is NUL, the name is given as-is.  Otherwise, the
+ * name is c-quoted, suitable for text output.  HT and LF are typical
+ * values used for the terminator, but other positive values are possible.
+ *
+ * In addition to non-negative values two special values in terminator
+ * are possible.
+ *
+ * -1: show the name c-quoted, without adding any terminator.
+ * -2: show the name as-is, without adding any terminator.
+ */
+#define CQ_NO_TERMINATOR_C_QUOTED	(-1)
+#define CQ_NO_TERMINATOR_AS_IS		(-2)
 
 void write_name_quoted(const char *name, FILE *, int terminator);
+/*
+ * Similar to the above, but the name is first made relative to the prefix
+ * before being shown.
+ */
 void write_name_quoted_relative(const char *name, const char *prefix,
 				FILE *fp, int terminator);
 

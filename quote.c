@@ -340,12 +340,12 @@ void quote_two_c_style(struct strbuf *sb, const char *prefix, const char *path,
 
 void write_name_quoted(const char *name, FILE *fp, int terminator)
 {
-	if (terminator) {
+	if (0 < terminator || terminator == CQ_NO_TERMINATOR_C_QUOTED)
 		quote_c_style(name, NULL, fp, 0);
-	} else {
+	else
 		fputs(name, fp);
-	}
-	fputc(terminator, fp);
+	if (0 <= terminator)
+		fputc(terminator, fp);
 }
 
 void write_name_quoted_relative(const char *name, const char *prefix,
